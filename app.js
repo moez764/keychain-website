@@ -56,4 +56,153 @@ async function handleOrderSubmit(event) {
     const timestampUpload = Date.now();
 
     // Paths inside the 'orders' bucket
-    const frontPath = `orders/${orderId}/front_${times
+    const frontPath = `orders/${orderId}/front_${timestampUpload}_${frontFile.name}`;
+    const backPath  = `orders/${orderId}/back_${timestampUpload}_${backFile.name}`;
+
+    // Upload front image
+    const { data: frontData, error: frontError } = await supabaseClient
+      .storage
+      .from('orders')   // bucket name
+      .upload(frontPath, frontFile);
+
+    if (frontError) {
+      console.error(frontError);
+      setStatus("Error uploading front image.");
+      return;
+    }
+
+    // Upload back image
+    const { data: backData, error: backError } = await supabaseClient
+      .storage
+      .from('orders')
+      .upload(backPath, backFile);
+
+    if (backError) {
+      console.error(backError);
+      setStatus("Error uploading back image.");
+      return;
+    }
+
+    // Insert order record into 'orders' table
+    const { error: insertError } = await supabaseClient
+      .from('orders')
+      .insert({
+        order_id: orderId,
+        order_number: orderId, // keep old NOT NULL column happy (optional)
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone || null,
+        front_path: frontPath,
+        back_path: backPath
+        // created_at will use default now()
+      });
+
+    if (insertError) {
+      console.error(insertError);
+      console.error('Insert error details:', insertError.message);
+      setStatus("Error saving order data.");
+      return;
+    }
+
+    setStatus(`Upload successful! Thank you, ${customerName}. Your order ID is: ${orderId}. Please save this for your records.`);
+
+    // Clear form
+    nameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
+    frontInput.value = "";
+    backInput.value = "";
+  } catch (err) {
+    console.error(err);
+    setStatus("Unexpected error. Please try again later.");
+  }
+}
+
+// 5. Load orders for admin page
+async function loadOrders() {
+  try {
+    setAdminStatus("Loading orders...");
+    const tbody = document.querySelector('#orders-table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    const { data, error } = await supabaseClient
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error(error);
+      setAdminStatus("Error loading orders.");
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      setAdminStatus("No orders found yet.");
+      return;
+    }
+
+    for (const row of data) {
+      const tr = document.createElement('tr');
+
+      // 1) Order ID
+      const orderTd = document.createElement('td');
+      orderTd.textContent = row.order_id || row.order_number || "(no id)";
+      tr.appendChild(orderTd);
+
+      // 2) Front photo
+      const { data: frontUrlData } = supabaseClient
+        .storage
+        .from('orders')
+        .getPublicUrl(row.front_path);
+
+      const frontTd = document.createElement('td');
+      const frontImg = document.createElement('img');
+      frontImg.src = frontUrlData.publicUrl;
+      frontImg.alt = "Front photo";
+      frontTd.appendChild(frontImg);
+      tr.appendChild(frontTd);
+
+      // 3) Back photo
+      const { data: backUrlData } = supabaseClient
+        .storage
+        .from('orders')
+        .getPublicUrl(row.back_path);
+
+      const backTd = document.createElement('td');
+      const backImg = document.createElement('img');
+      backImg.src = backUrlData.publicUrl;
+      backImg.alt = "Back photo";
+      backTd.appendChild(backImg);
+      tr.appendChild(backTd);
+
+      // 4) Name
+      const nameTd = document.createElement('td');
+      nameTd.textContent = row.customer_name || "(unknown)";
+      tr.appendChild(nameTd);
+
+      // 5) Email
+      const emailTd = document.createElement('td');
+      emailTd.textContent = row.customer_email || "(none)";
+      tr.appendChild(emailTd);
+
+      // 6) Phone
+      const phoneTd = document.createElement('td');
+      phoneTd.textContent = row.customer_phone || "(none)";
+      tr.appendChild(phoneTd);
+
+      // 7) Uploaded at
+      const timeTd = document.createElement('td');
+      timeTd.textContent = row.created_at ? new Date(row.created_at).toLocaleString() : "N/A";
+      tr.appendChild(timeTd);
+
+      tbody.appendChild(tr);
+    }
+
+    setAdminStatus("Orders loaded.");
+  } catch (err) {
+    console.error(err);
+    setAdminStatus("Unexpected error loading orders.");
+  }
+}
