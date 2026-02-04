@@ -1,75 +1,172 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+/* Global reset */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Page background */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #141e30, #243b55);
+  min-height: 100vh;
+  color: #f5f5f5;
+}
+
+/* Top bar */
 header {
-  background: #222;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(8px);
   color: #fff;
-  padding: 16px;
+  padding: 20px;
   text-align: center;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
+/* Center content */
 main {
-  max-width: 800px;
-  margin: 24px auto;
-  background: #fff;
-  padding: 24px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
+/* Card container */
+form,
+#admin-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 24px 24px 28px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+/* Form layout */
 form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
 }
 
+/* Labels & inputs */
 label {
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #e5e7eb;
 }
 
 input[type="text"],
 input[type="file"] {
-  padding: 8px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.85);
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
+input[type="text"]:focus,
+input[type="file"]:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.6);
+  background: rgba(15, 23, 42, 0.95);
+}
+
+/* Button */
 button {
-  padding: 10px 16px;
+  margin-top: 8px;
+  padding: 12px 18px;
   border: none;
-  border-radius: 4px;
-  background: #007bff;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #22c55e);
   color: white;
-  font-size: 14px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 button:hover {
-  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 18px 32px rgba(37, 99, 235, 0.6);
+  filter: brightness(1.05);
 }
 
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.5);
+}
+
+/* Status text */
 #status,
 #admin-status {
-  margin-top: 16px;
-  font-size: 14px;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #fde68a;
 }
 
+/* Admin table styling */
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 0.9rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 10px 8px;
+  text-align: left;
+  color: #e5e7eb;
+}
+
+th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+tr:hover td {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+/* Images in admin table */
+img {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+}
+
+/* Admin card wrapper */
+#admin-card {
   margin-top: 16px;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+/* Small screens */
+@media (max-width: 640px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  main {
+    margin: 24px auto;
+  }
+
+  form,
+  #admin-card {
+    padding: 20px 18px 22px;
+  }
 }
 
-img {
-  max-width: 150px;
-  max-height: 150px;
-  display: block;
-}
