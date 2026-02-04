@@ -27,7 +27,10 @@
       <table id="orders-table">
         <thead>
           <tr>
-            <th>Order #</th>
+            <th>Order ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
             <th>Front photo</th>
             <th>Back photo</th>
             <th>Uploaded at</th>
@@ -55,30 +58,10 @@
     const loginBtn = document.getElementById('login-btn');
     const loginStatus = document.getElementById('login-status');
     const passwordInput = document.getElementById('admin-password');
+    const refreshBtn = document.getElementById('refresh-btn');
 
     function showAdmin() {
       loginCard.style.display = 'none';
       adminCard.style.display = 'block';
       // Load orders once logged in
-      loadOrders();
-    }
-
-    loginBtn.addEventListener('click', () => {
-      const value = passwordInput.value;
-      if (value === ADMIN_PASSWORD) {
-        loginStatus.textContent = "";
-        showAdmin();
-      } else {
-        loginStatus.textContent = "Incorrect password.";
-      }
-    });
-
-    // Optional: allow Enter key to submit
-    passwordInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        loginBtn.click();
-      }
-    });
-  </script>
-</body>
-</html>
+      loadOr
