@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Keychain Photo Upload</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Custom Keychain – Photo Upload</h1>
+    <p>Enter your order number and upload the two photos for your keychain.</p>
+  </header>
+
+  <main>
+    <form id="order-form">
+      <label for="orderNumber">Order number</label>
+      <input type="text" id="orderNumber" name="orderNumber" required />
+
+      <label for="frontImage">Front photo (JPG/PNG)</label>
+      <input type="file" id="frontImage" name="frontImage" accept="image/*" required />
+
+      <label for="backImage">Back photo (JPG/PNG)</label>
+      <input type="file" id="backImage" name="backImage" accept="image/*" required />
+
+      <button type="submit">Upload photos</button>
+    </form>
+
+    <div id="status"></div>
+  </main>
+
+<!-- Supabase JS client -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+  <!-- Your app logic -->
+  <script src="app.js"></script>
+
+  <script>
+    document.getElementById('order-form').addEventListener('submit', handleOrderSubmit);
+  </script>
+</body>
+</html>
+ 

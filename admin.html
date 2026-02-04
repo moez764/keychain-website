@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin – Keychain Orders</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Admin – Uploaded Orders</h1>
+    <p>View all orders and their photos.</p>
+  </header>
+
+  <main>
+    <button id="refresh-btn">Refresh list</button>
+    <table id="orders-table">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Front photo</th>
+          <th>Back photo</th>
+          <th>Uploaded at</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled by JS -->
+      </tbody>
+    </table>
+    <div id="admin-status"></div>
+  </main>
+
+  <!-- Supabase JS client -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+  <script src="app.js"></script>
+
+  <script>
+    document.getElementById('refresh-btn').addEventListener('click', loadOrders);
+    window.addEventListener('load', loadOrders);
+  </script>
+</body>
+</html>
