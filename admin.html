@@ -8,25 +8,37 @@
 <body>
   <header>
     <h1>Admin – Uploaded Orders</h1>
-    <p>View all orders and their photos.</p>
+    <p>Sign in to view customer photos and order details.</p>
   </header>
 
   <main>
-    <button id="refresh-btn">Refresh list</button>
-    <table id="orders-table">
-      <thead>
-        <tr>
-          <th>Order #</th>
-          <th>Front photo</th>
-          <th>Back photo</th>
-          <th>Uploaded at</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Filled by JS -->
-      </tbody>
-    </table>
-    <div id="admin-status"></div>
+    <!-- Simple password gate -->
+    <div id="login-card">
+      <h2>Admin login</h2>
+      <p>Enter the admin password to continue.</p>
+      <input type="password" id="admin-password" placeholder="Password" />
+      <button id="login-btn">Login</button>
+      <div id="login-status"></div>
+    </div>
+
+    <!-- Admin content (hidden until login) -->
+    <div id="admin-card" style="display:none;">
+      <button id="refresh-btn">Refresh list</button>
+      <table id="orders-table">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Front photo</th>
+            <th>Back photo</th>
+            <th>Uploaded at</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+      <div id="admin-status"></div>
+    </div>
   </main>
 
   <!-- Supabase JS client -->
@@ -35,8 +47,38 @@
   <script src="app.js"></script>
 
   <script>
-    document.getElementById('refresh-btn').addEventListener('click', loadOrders);
-    window.addEventListener('load', loadOrders);
+    // Very simple client-side password gate
+    const ADMIN_PASSWORD = "KeychainAdmin2026"; // <-- change to your password if you want
+
+    const loginCard = document.getElementById('login-card');
+    const adminCard = document.getElementById('admin-card');
+    const loginBtn = document.getElementById('login-btn');
+    const loginStatus = document.getElementById('login-status');
+    const passwordInput = document.getElementById('admin-password');
+
+    function showAdmin() {
+      loginCard.style.display = 'none';
+      adminCard.style.display = 'block';
+      // Load orders once logged in
+      loadOrders();
+    }
+
+    loginBtn.addEventListener('click', () => {
+      const value = passwordInput.value;
+      if (value === ADMIN_PASSWORD) {
+        loginStatus.textContent = "";
+        showAdmin();
+      } else {
+        loginStatus.textContent = "Incorrect password.";
+      }
+    });
+
+    // Optional: allow Enter key to submit
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        loginBtn.click();
+      }
+    });
   </script>
 </body>
 </html>
