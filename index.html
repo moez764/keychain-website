@@ -13,8 +13,15 @@
 
   <main>
     <form id="order-form">
-      <label for="orderNumber">Order number</label>
-      <input type="text" id="orderNumber" name="orderNumber" required />
+      <label for="customerName">Full name</label>
+      <input type="text" id="customerName" name="customerName" required />
+
+      <label for="customerEmail">Email address</label>
+      <input type="email" id="customerEmail" name="customerEmail" required />
+
+      <label for="customerPhone">Phone number (optional)</label>
+      <input type="tel" id="customerPhone" name="customerPhone" placeholder="e.g. +971 5x xxx xxxx" />
+
 
       <label for="frontImage">Front photo (JPG/PNG)</label>
       <input type="file" id="frontImage" name="frontImage" accept="image/*" required />
@@ -39,4 +46,5 @@
   </script>
 </body>
 </html>
+
  
