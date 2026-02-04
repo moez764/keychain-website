@@ -3,7 +3,7 @@
 // 1. Supabase config – REPLACE with your own
 // Get these from Supabase: Settings -> API
 const SUPABASE_URL = 'https://zngoaecsdpyyprrnluza.supabase.co';        // your URL
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ29hZWNzZHB5eXBycm5sdXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMTk3NjIsImV4cCI6MjA4NTc5NTc2Mn0.boZ5F4ZQcIantpdaiSmaUeBTPE_moDmu60j3I8sXKNk';                 // replace this
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpuZ29hZWNzZHB5eXBycm5sdXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMTk3NjIsImV4cCI6MjA4NTc5NTc2Mn0.boZ5F4ZQcIantpdaiSmaUeBTPE_moDmu60j3I8sXKNk'; // replace this
 
 // 2. Initialize Supabase client (global variable)
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -60,9 +60,9 @@ async function handleOrderSubmit(event) {
     const backPath  = `orders/${orderId}/back_${timestampUpload}_${backFile.name}`;
 
     // Upload front image
-    const { data: frontData, error: frontError } = await supabaseClient
+    const { error: frontError } = await supabaseClient
       .storage
-      .from('orders')   // bucket name
+      .from('orders')
       .upload(frontPath, frontFile);
 
     if (frontError) {
@@ -72,7 +72,7 @@ async function handleOrderSubmit(event) {
     }
 
     // Upload back image
-    const { data: backData, error: backError } = await supabaseClient
+    const { error: backError } = await supabaseClient
       .storage
       .from('orders')
       .upload(backPath, backFile);
@@ -99,7 +99,6 @@ async function handleOrderSubmit(event) {
 
     if (insertError) {
       console.error(insertError);
-      console.error('Insert error details:', insertError.message);
       setStatus("Error saving order data.");
       return;
     }
