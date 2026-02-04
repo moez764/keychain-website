@@ -8,7 +8,7 @@
 <body>
   <header>
     <h1>Custom Keychain – Photo Upload</h1>
-    <p>Enter your order number and upload the two photos for your keychain.</p>
+    <p>Enter your details and upload the two photos for your keychain.</p>
   </header>
 
   <main>
@@ -22,7 +22,6 @@
       <label for="customerPhone">Phone number (optional)</label>
       <input type="tel" id="customerPhone" name="customerPhone" placeholder="e.g. +971 5x xxx xxxx" />
 
-
       <label for="frontImage">Front photo (JPG/PNG)</label>
       <input type="file" id="frontImage" name="frontImage" accept="image/*" required />
 
@@ -33,9 +32,18 @@
     </form>
 
     <div id="status"></div>
+
+    <!-- Big success card -->
+    <div id="success-card" class="success-hidden">
+      <div class="success-icon">✔</div>
+      <div class="success-text">
+        <h2>Order received!</h2>
+        <p id="success-order-text"></p>
+      </div>
+    </div>
   </main>
 
-<!-- Supabase JS client -->
+  <!-- Supabase JS client -->
   <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
   <!-- Your app logic -->
@@ -46,5 +54,3 @@
   </script>
 </body>
 </html>
-
- 
