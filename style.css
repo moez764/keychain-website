@@ -1,64 +1,64 @@
 /* Global reset */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
 /* Page background */
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top, #141e30, #243b55);
-  min-height: 100vh;
-  color: #f5f5f5;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+background: radial-gradient(circle at top, #141e30, #243b55);
+min-height: 100vh;
+color: #f5f5f5;
 }
 
 /* Top bar */
 header {
-  background: rgba(10, 10, 10, 0.85);
-  backdrop-filter: blur(8px);
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-  letter-spacing: 0.03em;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+background: rgba(10, 10, 10, 0.85);
+backdrop-filter: blur(8px);
+color: #fff;
+padding: 20px;
+text-align: center;
+letter-spacing: 0.03em;
+box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* Center content */
 main {
-  max-width: 1100px; /* was 900px, now wider */
-  margin: 40px auto;
-  padding: 0 16px;
+max-width: 1100px; /* was 900px, now wider */
+margin: 40px auto;
+padding: 0 16px;
 }
 
 /* Card container */
 form,
 #admin-card {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 24px 24px 28px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
+background: rgba(255, 255, 255, 0.06);
+border-radius: 16px;
+padding: 24px 24px 28px;
+box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+border: 1px solid rgba(255, 255, 255, 0.12);
+backdrop-filter: blur(14px);
 }
 
 /* Admin card wrapper – let it stretch more */
 #admin-card {
-  margin-top: 16px;
+margin-top: 16px;
 }
 
 /* Form layout */
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+display: flex;
+flex-direction: column;
+gap: 18px;
 }
 
 /* Labels & inputs */
 label {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #e5e7eb;
+font-weight: 600;
+font-size: 0.95rem;
+color: #e5e7eb;
 }
 
 input[type="text"],
@@ -66,195 +66,151 @@ input[type="file"],
 input[type="email"],
 input[type="tel"],
 input[type="password"] {
-  width: 100%;
-  margin-top: 6px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  background: rgba(15, 23, 42, 0.85);
-  color: #e5e7eb;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+width: 100%;
+margin-top: 6px;
+padding: 10px 12px;
+border-radius: 10px;
+border: 1px solid rgba(148, 163, 184, 0.7);
+background: rgba(15, 23, 42, 0.85);
+color: #e5e7eb;
+font-size: 0.95rem;
+outline: none;
+transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
+
 
 input[type="text"]:focus,
 input[type="file"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
 input[type="password"]:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.6);
-  background: rgba(15, 23, 42, 0.95);
+border-color: #60a5fa;
+box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.6);
+background: rgba(15, 23, 42, 0.95);
 }
 
 /* Button */
 button {
-  margin-top: 8px;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #22c55e);
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+margin-top: 8px;
+padding: 12px 18px;
+border: none;
+border-radius: 999px;
+background: linear-gradient(135deg, #2563eb, #22c55e);
+color: white;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+letter-spacing: 0.02em;
+box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4);
+transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
 }
 
 button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 32px rgba(37, 99, 235, 0.6);
-  filter: brightness(1.05);
+transform: translateY(-1px);
+box-shadow: 0 18px 32px rgba(37, 99, 235, 0.6);
+filter: brightness(1.05);
 }
 
 button:active {
-  transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.5);
+transform: translateY(0);
+box-shadow: 0 8px 18px rgba(37, 99, 235, 0.5);
 }
 
 /* Status text */
 #status,
 #admin-status {
-  margin-top: 14px;
-  font-size: 0.9rem;
-  color: #fde68a;
-}
-
-/* Big success card after submit */
-#success-card {
-  margin-top: 20px;
-  padding: 18px 20px;
-  border-radius: 14px;
-  background: rgba(22, 163, 74, 0.18);
-  border: 1px solid rgba(34, 197, 94, 0.6);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  box-shadow: 0 12px 30px rgba(22, 163, 74, 0.35);
-}
-
-.success-hidden {
-  display: none;
-}
-
-.success-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 999px;
-  background: #22c55e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 700;
-  color: #0b1120;
-}
-
-.success-text h2 {
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-}
-
-.success-text p {
-  font-size: 0.95rem;
-  color: #e5f9ee;
+margin-top: 14px;
+font-size: 0.9rem;
+color: #fde68a;
 }
 
 /* Admin table styling */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 18px;
-  font-size: 0.9rem;
-  table-layout: fixed; /* keep columns nicely sized */
+width: 100%;
+border-collapse: collapse;
+margin-top: 18px;
+font-size: 0.9rem;
+table-layout: fixed; /* keep columns nicely sized */
 }
 
 th,
 td {
-  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
-  padding: 10px 8px;
-  text-align: center;   /* center content */
-  vertical-align: middle;
-  color: #e5e7eb;
+border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+padding: 10px 8px;
+text-align: center; /* center content */
+vertical-align: middle;
+color: #e5e7eb;
 }
 
 th {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  color: #9ca3af;
+font-weight: 600;
+text-transform: uppercase;
+font-size: 0.75rem;
+letter-spacing: 0.08em;
+color: #9ca3af;
 }
 
 tr:hover td {
-  background: rgba(15, 23, 42, 0.5);
+background: rgba(15, 23, 42, 0.5);
 }
 
 /* Images in admin table – larger and centered */
 #orders-table img {
-  max-width: 180px;
-  max-height: 180px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 1px solid rgba(148, 163, 184, 0.6);
-  display: block;
-  margin: 0 auto;
+max-width: 180px;
+max-height: 180px;
+border-radius: 8px;
+object-fit: cover;
+border: 1px solid rgba(148, 163, 184, 0.6);
+display: block;
+margin: 0 auto;
 }
 
 /* Login card */
 #login-card {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 24px 24px 28px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  max-width: 420px;
-  margin: 0 auto 20px;
+background: rgba(255, 255, 255, 0.06);
+border-radius: 16px;
+padding: 24px 24px 28px;
+box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+border: 1px solid rgba(255, 255, 255, 0.12);
+backdrop-filter: blur(14px);
+max-width: 420px;
+margin: 0 auto 20px;
 }
 
 #login-card h2 {
-  margin-bottom: 8px;
+margin-bottom: 8px;
 }
 
 #login-card p {
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-  color: #cbd5f5;
+margin-bottom: 12px;
+font-size: 0.9rem;
+color: #cbd5f5;
 }
 
 #login-status {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  color: #fecaca;
+margin-top: 6px;
+font-size: 0.85rem;
+color: #fecaca;
 }
 
 /* Small screens */
 @media (max-width: 640px) {
-  header h1 {
-    font-size: 1.4rem;
-  }
+header h1 {
+font-size: 1.4rem;
+}
 
-  main {
-    max-width: 100%;
-    margin: 24px auto;
-  }
+main {
+max-width: 100%;
+margin: 24px auto;
+}
 
-  form,
-  #admin-card {
-    padding: 20px 18px 22px;
-  }
+form,
+#admin-card {
+padding: 20px 18px 22px;
+}
 
-  #orders-table img {
-    max-width: 130px;
-    max-height: 130px;
-  }
-
-  #success-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+#orders-table img {
+max-width: 130px;
+max-height: 130px;
+}
 }
