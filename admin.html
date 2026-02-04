@@ -46,7 +46,6 @@
 
   <!-- Supabase JS client -->
   <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-
   <script src="app.js"></script>
 
   <script>
@@ -64,4 +63,30 @@
       loginCard.style.display = 'none';
       adminCard.style.display = 'block';
       // Load orders once logged in
-      loadOr
+      loadOrders();
+    }
+
+    loginBtn.addEventListener('click', () => {
+      const value = passwordInput.value;
+      if (value === ADMIN_PASSWORD) {
+        loginStatus.textContent = "";
+        showAdmin();
+      } else {
+        loginStatus.textContent = "Incorrect password.";
+      }
+    });
+
+    // Optional: allow Enter key to submit
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        loginBtn.click();
+      }
+    });
+
+    // Refresh button reloads orders
+    refreshBtn.addEventListener('click', () => {
+      loadOrders();
+    });
+  </script>
+</body>
+</html>
