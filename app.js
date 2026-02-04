@@ -98,9 +98,11 @@ async function handleOrderSubmit(event) {
 
     if (insertError) {
       console.error(insertError);
+      console.error('Insert error details:', insertError.message);
       setStatus("Error saving order data.");
       return;
     }
+
 
     setStatus(`Upload successful! Thank you, ${customerName}. Your order ID is: ${orderId}. Please save this for your records.`);
 
@@ -189,3 +191,4 @@ async function loadOrders() {
     setAdminStatus("Unexpected error loading orders.");
   }
 }
+
