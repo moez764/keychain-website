@@ -26,7 +26,7 @@ header {
 
 /* Center content */
 main {
-  max-width: 900px;
+  max-width: 1100px; /* was 900px, now wider */
   margin: 40px auto;
   padding: 0 16px;
 }
@@ -40,6 +40,11 @@ form,
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(14px);
+}
+
+/* Admin card wrapper – let it stretch more */
+#admin-card {
+  margin-top: 16px;
 }
 
 /* Form layout */
@@ -57,7 +62,10 @@ label {
 }
 
 input[type="text"],
-input[type="file"] {
+input[type="file"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
   width: 100%;
   margin-top: 6px;
   padding: 10px 12px;
@@ -71,7 +79,10 @@ input[type="file"] {
 }
 
 input[type="text"]:focus,
-input[type="file"]:focus {
+input[type="file"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus {
   border-color: #60a5fa;
   box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.6);
   background: rgba(15, 23, 42, 0.95);
@@ -118,13 +129,15 @@ table {
   border-collapse: collapse;
   margin-top: 18px;
   font-size: 0.9rem;
+  table-layout: fixed; /* keep columns nicely sized */
 }
 
 th,
 td {
   border-bottom: 1px solid rgba(148, 163, 184, 0.35);
   padding: 10px 8px;
-  text-align: left;
+  text-align: center;   /* center content */
+  vertical-align: middle;
   color: #e5e7eb;
 }
 
@@ -140,40 +153,18 @@ tr:hover td {
   background: rgba(15, 23, 42, 0.5);
 }
 
-/* Images in admin table */
-img {
-  max-width: 120px;
-  max-height: 120px;
+/* Images in admin table – larger and centered */
+#orders-table img {
+  max-width: 180px;
+  max-height: 180px;
   border-radius: 8px;
   object-fit: cover;
   border: 1px solid rgba(148, 163, 184, 0.6);
+  display: block;
+  margin: 0 auto;
 }
 
-/* Admin card wrapper */
-#admin-card {
-  margin-top: 16px;
-}
-
-/* Small screens */
-@media (max-width: 640px) {
-  header h1 {
-    font-size: 1.4rem;
-  }
-
-  main {
-    margin: 24px auto;
-  }
-
-  form,
-  #admin-card {
-    padding: 20px 18px 22px;
-  }
-}
-
-
-
-
-
+/* Login card */
 #login-card {
   background: rgba(255, 255, 255, 0.06);
   border-radius: 16px;
@@ -195,15 +186,30 @@ img {
   color: #cbd5f5;
 }
 
-#login-card input[type="password"] {
-  margin-bottom: 10px;
-}
-
 #login-status {
   margin-top: 6px;
   font-size: 0.85rem;
   color: #fecaca;
 }
 
+/* Small screens */
+@media (max-width: 640px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
 
+  main {
+    max-width: 100%;
+    margin: 24px auto;
+  }
 
+  form,
+  #admin-card {
+    padding: 20px 18px 22px;
+  }
+
+  #orders-table img {
+    max-width: 130px;
+    max-height: 130px;
+  }
+}
