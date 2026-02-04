@@ -23,27 +23,41 @@ function setAdminStatus(message) {
 async function handleOrderSubmit(event) {
   event.preventDefault();
 
-  const orderNumberInput = document.getElementById('orderNumber');
+  const nameInput = document.getElementById('customerName');
+  const emailInput = document.getElementById('customerEmail');
+  const phoneInput = document.getElementById('customerPhone');
   const frontInput = document.getElementById('frontImage');
   const backInput = document.getElementById('backImage');
 
-  const orderNumber = orderNumberInput.value.trim();
+  const customerName = nameInput.value.trim();
+  const customerEmail = emailInput.value.trim();
+  const customerPhone = phoneInput.value.trim();
   const frontFile = frontInput.files[0];
   const backFile = backInput.files[0];
 
-  if (!orderNumber || !frontFile || !backFile) {
-    setStatus("Please fill all fields and select both images.");
+  if (!customerName || !customerEmail || !frontFile || !backFile) {
+    setStatus("Please fill in name, email and select both images.");
     return;
   }
+
+  if (!customerEmail.includes("@")) {
+    setStatus("Please enter a valid email address.");
+    return;
+  }
+
+  // Generate a unique order ID, e.g. KC-<timestamp>-ABCDE
+  const timestamp = Date.now();
+  const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
+  const orderId = `KC-${timestamp}-${randomPart}`;
 
   try {
     setStatus("Uploading images, please wait...");
 
-    const timestamp = Date.now();
+    const timestampUpload = Date.now();
 
     // Paths inside the 'orders' bucket
-    const frontPath = `orders/${orderNumber}/front_${timestamp}_${frontFile.name}`;
-    const backPath  = `orders/${orderNumber}/back_${timestamp}_${backFile.name}`;
+    const frontPath = `orders/${orderId}/front_${timestampUpload}_${frontFile.name}`;
+    const backPath  = `orders/${orderId}/back_${timestampUpload}_${backFile.name}`;
 
     // Upload front image
     const { data: frontData, error: frontError } = await supabaseClient
@@ -73,7 +87,10 @@ async function handleOrderSubmit(event) {
     const { error: insertError } = await supabaseClient
       .from('orders')
       .insert({
-        order_number: orderNumber,
+        order_id: orderId,
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone || null,
         front_path: frontPath,
         back_path: backPath
         // created_at will use default now()
@@ -85,8 +102,12 @@ async function handleOrderSubmit(event) {
       return;
     }
 
-    setStatus("Upload successful! Thank you.");
-    orderNumberInput.value = "";
+    setStatus(`Upload successful! Thank you, ${customerName}. Your order ID is: ${orderId}. Please save this for your records.`);
+
+    // Clear form
+    nameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
     frontInput.value = "";
     backInput.value = "";
   } catch (err) {
@@ -123,9 +144,12 @@ async function loadOrders() {
     for (const row of data) {
       const tr = document.createElement('tr');
 
+      // Show order ID instead of old order_number
       const orderTd = document.createElement('td');
-      orderTd.textContent = row.order_number || "(no number)";
+      orderTd.textContent = row.order_id || row.order_number || "(no id)";
       tr.appendChild(orderTd);
+
+      // You can add more columns later for name/email if you like
 
       // Build public URLs for images
       const { data: frontUrlData } = supabaseClient
