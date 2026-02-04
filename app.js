@@ -103,7 +103,17 @@ async function handleOrderSubmit(event) {
       return;
     }
 
-    setStatus(`Upload successful! Thank you, ${customerName}. Your order ID is: ${orderId}. Please save this for your records.`);
+    // Clear small status text and show big success card
+    setStatus("");
+
+    const successCard = document.getElementById('success-card');
+    const successOrderText = document.getElementById('success-order-text');
+
+    if (successCard && successOrderText) {
+      successOrderText.textContent =
+        `Thank you, ${customerName}. Your order ID is ${orderId}. Please save this for your records.`;
+      successCard.classList.remove('success-hidden');
+    }
 
     // Clear form
     nameInput.value = "";
