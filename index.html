@@ -1,56 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Custom Keychain Photo Upload</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<title>Custom Keychain Photo Upload</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Custom Keychain – Photo Upload</h1>
-    <p>Enter your details and upload the two photos for your keychain.</p>
-  </header>
+<header>
+<h1>Custom Keychain – Photo Upload</h1>
+<p>Enter your order number and upload the two photos for your keychain.</p>
+</header>
 
-  <main>
-    <form id="order-form">
-      <label for="customerName">Full name</label>
-      <input type="text" id="customerName" name="customerName" required />
+<main>
+<form id="order-form">
+<label for="customerName">Full name</label>
+<input type="text" id="customerName" name="customerName" required />
 
-      <label for="customerEmail">Email address</label>
-      <input type="email" id="customerEmail" name="customerEmail" required />
+<label for="customerEmail">Email address</label>
+<input type="email" id="customerEmail" name="customerEmail" required />
 
-      <label for="customerPhone">Phone number (optional)</label>
-      <input type="tel" id="customerPhone" name="customerPhone" placeholder="e.g. +971 5x xxx xxxx" />
+<label for="customerPhone">Phone number (optional)</label>
+<input type="tel" id="customerPhone" name="customerPhone" placeholder="e.g. +971 5x xxx xxxx" />
 
-      <label for="frontImage">Front photo (JPG/PNG)</label>
-      <input type="file" id="frontImage" name="frontImage" accept="image/*" required />
 
-      <label for="backImage">Back photo (JPG/PNG)</label>
-      <input type="file" id="backImage" name="backImage" accept="image/*" required />
+<label for="frontImage">Front photo (JPG/PNG)</label>
+<input type="file" id="frontImage" name="frontImage" accept="image/*" required />
 
-      <button type="submit">Upload photos</button>
-    </form>
+<label for="backImage">Back photo (JPG/PNG)</label>
+<input type="file" id="backImage" name="backImage" accept="image/*" required />
 
-    <div id="status"></div>
+<button type="submit">Upload photos</button>
+</form>
 
-    <!-- Big success card -->
-    <div id="success-card" class="success-hidden">
-      <div class="success-icon">✔</div>
-      <div class="success-text">
-        <h2>Order received!</h2>
-        <p id="success-order-text"></p>
-      </div>
-    </div>
-  </main>
+<div id="status"></div>
+</main>
 
-  <!-- Supabase JS client -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- Supabase JS client -->
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
-  <!-- Your app logic -->
-  <script src="app.js"></script>
+<!-- Your app logic -->
+<script src="app.js"></script>
 
-  <script>
-    document.getElementById('order-form').addEventListener('submit', handleOrderSubmit);
-  </script>
+<script>
+document.getElementById('order-form').addEventListener('submit', handleOrderSubmit);
+</script>
 </body>
 </html>
