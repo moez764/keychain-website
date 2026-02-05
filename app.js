@@ -70,6 +70,23 @@ console.error(frontError);
 setStatus("Error uploading front image.");
 return;
 }
+// Fire-and-forget call to edge function to send emails
+fetch('https://zngoaecsdpyyprrnluza.supabase.co/functions/v1/order-email', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+    // no auth needed because we used --no-verify-jwt
+  },
+  body: JSON.stringify({
+    orderId,
+    customerName,
+    customerEmail,
+    customerPhone: customerPhone || null
+  })
+}).catch((err) => {
+  console.error('Email function error:', err);
+  // We don't block the user if email fails
+});
 
 // Upload back image
 const { error: backError } = await supabaseClient
