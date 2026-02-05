@@ -8,7 +8,7 @@
 <body>
 <header>
 <h1>Custom Keychain – Photo Upload</h1>
-<p>Enter your order number and upload the two photos for your keychain.</p>
+<p>Enter your details and upload the two photos for your keychain.</p>
 </header>
 
 <main>
@@ -33,6 +33,18 @@
 </form>
 
 <div id="status"></div>
+
+      <!-- Success popup modal -->
+    <div id="success-modal" class="modal hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-icon">✔</div>
+        <h2>Order placed</h2>
+        <p>Thank you for your order. Your order ID is:</p>
+        <p id="modal-order-id"></p>
+        <button id="modal-close-btn">Close</button>
+      </div>
+    </div>
 </main>
 
 <!-- Supabase JS client -->
@@ -46,3 +58,4 @@ document.getElementById('order-form').addEventListener('submit', handleOrderSubm
 </script>
 </body>
 </html>
+
