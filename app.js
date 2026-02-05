@@ -10,115 +10,116 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // 3. Helper: show status messages
 function setStatus(message) {
-const statusDiv = document.getElementById('status');
-if (statusDiv) statusDiv.textContent = message;
+  const statusDiv = document.getElementById('status');
+  if (statusDiv) statusDiv.textContent = message;
 }
 
 function setAdminStatus(message) {
-const statusDiv = document.getElementById('admin-status');
-if (statusDiv) statusDiv.textContent = message;
+  const statusDiv = document.getElementById('admin-status');
+  if (statusDiv) statusDiv.textContent = message;
 }
 
 // 4. Handle customer upload form
 async function handleOrderSubmit(event) {
-event.preventDefault();
+  event.preventDefault();
 
-const nameInput = document.getElementById('customerName');
-const emailInput = document.getElementById('customerEmail');
-const phoneInput = document.getElementById('customerPhone');
-const frontInput = document.getElementById('frontImage');
-const backInput = document.getElementById('backImage');
+  const nameInput = document.getElementById('customerName');
+  const emailInput = document.getElementById('customerEmail');
+  const phoneInput = document.getElementById('customerPhone');
+  const frontInput = document.getElementById('frontImage');
+  const backInput = document.getElementById('backImage');
 
-const customerName = nameInput.value.trim();
-const customerEmail = emailInput.value.trim();
-const customerPhone = phoneInput.value.trim();
-const frontFile = frontInput.files[0];
-const backFile = backInput.files[0];
+  const customerName = nameInput.value.trim();
+  const customerEmail = emailInput.value.trim();
+  const customerPhone = phoneInput.value.trim();
+  const frontFile = frontInput.files[0];
+  const backFile = backInput.files[0];
 
-if (!customerName || !customerEmail || !frontFile || !backFile) {
-setStatus("Please fill in name, email and select both images.");
-return;
-}
+  if (!customerName || !customerEmail || !frontFile || !backFile) {
+    setStatus("Please fill in name, email and select both images.");
+    return;
+  }
 
-if (!customerEmail.includes("@")) {
-setStatus("Please enter a valid email address.");
-return;
-}
+  if (!customerEmail.includes("@")) {
+    setStatus("Please enter a valid email address.");
+    return;
+  }
 
-// Generate a unique order ID, e.g. KC-<timestamp>-ABCDE
-const timestamp = Date.now();
-const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
-const orderId = `KC-${timestamp}-${randomPart}`;
+  // Generate a unique order ID, e.g. KC-<timestamp>-ABCDE
+  const timestamp = Date.now();
+  const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
+  const orderId = `KC-${timestamp}-${randomPart}`;
 
-try {
-setStatus("Uploading images, please wait...");
+  try {
+    setStatus("Uploading images, please wait...");
 
-const timestampUpload = Date.now();
+    const timestampUpload = Date.now();
 
-// Paths inside the 'orders' bucket
-const frontPath = `orders/${orderId}/front_${timestampUpload}_${frontFile.name}`;
-const backPath = `orders/${orderId}/back_${timestampUpload}_${backFile.name}`;
+    // Paths inside the 'orders' bucket
+    const frontPath = `orders/${orderId}/front_${timestampUpload}_${frontFile.name}`;
+    const backPath  = `orders/${orderId}/back_${timestampUpload}_${backFile.name}`;
 
-// Upload front image
-const { error: frontError } = await supabaseClient
-.storage
-.from('orders')
-.upload(frontPath, frontFile);
+    // Upload front image
+    const { error: frontError } = await supabaseClient
+      .storage
+      .from('orders')
+      .upload(frontPath, frontFile);
 
-if (frontError) {
-console.error(frontError);
-setStatus("Error uploading front image.");
-return;
-}
-// Fire-and-forget call to edge function to send emails
-fetch('https://zngoaecsdpyyprrnluza.supabase.co/functions/v1/order-email', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-    // no auth needed because we used --no-verify-jwt
-  },
-  body: JSON.stringify({
-    orderId,
-    customerName,
-    customerEmail,
-    customerPhone: customerPhone || null
-  })
-}).catch((err) => {
-  console.error('Email function error:', err);
-  // We don't block the user if email fails
-});
+    if (frontError) {
+      console.error(frontError);
+      setStatus("Error uploading front image.");
+      return;
+    }
 
-// Upload back image
-const { error: backError } = await supabaseClient
-.storage
-.from('orders')
-.upload(backPath, backFile);
+    // Upload back image
+    const { error: backError } = await supabaseClient
+      .storage
+      .from('orders')
+      .upload(backPath, backFile);
 
-if (backError) {
-console.error(backError);
-setStatus("Error uploading back image.");
-return;
-}
+    if (backError) {
+      console.error(backError);
+      setStatus("Error uploading back image.");
+      return;
+    }
 
-// Insert order record into 'orders' table
-const { error: insertError } = await supabaseClient
-.from('orders')
-.insert({
-order_id: orderId,
-order_number: orderId, // keep old NOT NULL column happy (optional)
-customer_name: customerName,
-customer_email: customerEmail,
-customer_phone: customerPhone || null,
-front_path: frontPath,
-back_path: backPath
-// created_at will use default now()
-});
+    // Insert order record into 'orders' table
+    const { error: insertError } = await supabaseClient
+      .from('orders')
+      .insert({
+        order_id: orderId,
+        order_number: orderId, // keep old NOT NULL column happy (optional)
+        customer_name: customerName,
+        customer_email: customerEmail,
+        customer_phone: customerPhone || null,
+        front_path: frontPath,
+        back_path: backPath
+        // created_at will use default now()
+      });
 
     if (insertError) {
       console.error(insertError);
       setStatus("Error saving order data.");
       return;
     }
+
+    // Fire-and-forget call to edge function to send emails
+    fetch('https://zngoaecsdpyyprrnluza.supabase.co/functions/v1/order-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // no auth needed because we used --no-verify-jwt
+      },
+      body: JSON.stringify({
+        orderId,
+        customerName,
+        customerEmail,
+        customerPhone: customerPhone || null
+      })
+    }).catch((err) => {
+      console.error('Email function error:', err);
+      // We don't block the user if email fails
+    });
 
     // Clear small status text
     setStatus("");
@@ -151,99 +152,97 @@ back_path: backPath
     phoneInput.value = "";
     frontInput.value = "";
     backInput.value = "";
-
-} catch (err) {
-console.error(err);
-setStatus("Unexpected error. Please try again later.");
-}
+  } catch (err) {
+    console.error(err);
+    setStatus("Unexpected error. Please try again later.");
+  }
 }
 
 // 5. Load orders for admin page
 async function loadOrders() {
-try {
-setAdminStatus("Loading orders...");
-const tbody = document.querySelector('#orders-table tbody');
-if (!tbody) return;
+  try {
+    setAdminStatus("Loading orders...");
+    const tbody = document.querySelector('#orders-table tbody');
+    if (!tbody) return;
 
-tbody.innerHTML = "";
+    tbody.innerHTML = "";
 
-const { data, error } = await supabaseClient
-.from('orders')
-.select('*')
-.order('created_at', { ascending: false });
+    const { data, error } = await supabaseClient
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-if (error) {
-console.error(error);
-setAdminStatus("Error loading orders.");
-return;
+    if (error) {
+      console.error(error);
+      setAdminStatus("Error loading orders.");
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      setAdminStatus("No orders found yet.");
+      return;
+    }
+
+    for (const row of data) {
+      const tr = document.createElement('tr');
+
+      // 1) Order ID
+      const orderTd = document.createElement('td');
+      orderTd.textContent = row.order_id || row.order_number || "(no id)";
+      tr.appendChild(orderTd);
+
+      // 2) Front photo
+      const { data: frontUrlData } = supabaseClient
+        .storage
+        .from('orders')
+        .getPublicUrl(row.front_path);
+
+      const frontTd = document.createElement('td');
+      const frontImg = document.createElement('img');
+      frontImg.src = frontUrlData.publicUrl;
+      frontImg.alt = "Front photo";
+      frontTd.appendChild(frontImg);
+      tr.appendChild(frontTd);
+
+      // 3) Back photo
+      const { data: backUrlData } = supabaseClient
+        .storage
+        .from('orders')
+        .getPublicUrl(row.back_path);
+
+      const backTd = document.createElement('td');
+      const backImg = document.createElement('img');
+      backImg.src = backUrlData.publicUrl;
+      backImg.alt = "Back photo";
+      backTd.appendChild(backImg);
+      tr.appendChild(backTd);
+
+      // 4) Name
+      const nameTd = document.createElement('td');
+      nameTd.textContent = row.customer_name || "(unknown)";
+      tr.appendChild(nameTd);
+
+      // 5) Email
+      const emailTd = document.createElement('td');
+      emailTd.textContent = row.customer_email || "(none)";
+      tr.appendChild(emailTd);
+
+      // 6) Phone
+      const phoneTd = document.createElement('td');
+      phoneTd.textContent = row.customer_phone || "(none)";
+      tr.appendChild(phoneTd);
+
+      // 7) Uploaded at
+      const timeTd = document.createElement('td');
+      timeTd.textContent = row.created_at ? new Date(row.created_at).toLocaleString() : "N/A";
+      tr.appendChild(timeTd);
+
+      tbody.appendChild(tr);
+    }
+
+    setAdminStatus("Orders loaded.");
+  } catch (err) {
+    console.error(err);
+    setAdminStatus("Unexpected error loading orders.");
+  }
 }
-
-if (!data || data.length === 0) {
-setAdminStatus("No orders found yet.");
-return;
-}
-
-for (const row of data) {
-const tr = document.createElement('tr');
-
-// 1) Order ID
-const orderTd = document.createElement('td');
-orderTd.textContent = row.order_id || row.order_number || "(no id)";
-tr.appendChild(orderTd);
-
-// 2) Front photo
-const { data: frontUrlData } = supabaseClient
-.storage
-.from('orders')
-.getPublicUrl(row.front_path);
-
-const frontTd = document.createElement('td');
-const frontImg = document.createElement('img');
-frontImg.src = frontUrlData.publicUrl;
-frontImg.alt = "Front photo";
-frontTd.appendChild(frontImg);
-tr.appendChild(frontTd);
-
-// 3) Back photo
-const { data: backUrlData } = supabaseClient
-.storage
-.from('orders')
-.getPublicUrl(row.back_path);
-
-const backTd = document.createElement('td');
-const backImg = document.createElement('img');
-backImg.src = backUrlData.publicUrl;
-backImg.alt = "Back photo";
-backTd.appendChild(backImg);
-tr.appendChild(backTd);
-
-// 4) Name
-const nameTd = document.createElement('td');
-nameTd.textContent = row.customer_name || "(unknown)";
-tr.appendChild(nameTd);
-
-// 5) Email
-const emailTd = document.createElement('td');
-emailTd.textContent = row.customer_email || "(none)";
-tr.appendChild(emailTd);
-
-// 6) Phone
-const phoneTd = document.createElement('td');
-phoneTd.textContent = row.customer_phone || "(none)";
-tr.appendChild(phoneTd);
-
-// 7) Uploaded at
-const timeTd = document.createElement('td');
-timeTd.textContent = row.created_at ? new Date(row.created_at).toLocaleString() : "N/A";
-tr.appendChild(timeTd);
-
-tbody.appendChild(tr);
-}
-
-setAdminStatus("Orders loaded.");
-} catch (err) {
-console.error(err);
-setAdminStatus("Unexpected error loading orders.");
-}
-}
-
