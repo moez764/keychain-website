@@ -97,20 +97,44 @@ back_path: backPath
 // created_at will use default now()
 });
 
-if (insertError) {
-console.error(insertError);
-setStatus("Error saving order data.");
-return;
-}
+    if (insertError) {
+      console.error(insertError);
+      setStatus("Error saving order data.");
+      return;
+    }
 
-setStatus(`Upload successful! Thank you, ${customerName}. Your order ID is: ${orderId}. Please save this for your records.`);
+    // Clear small status text
+    setStatus("");
 
-// Clear form
-nameInput.value = "";
-emailInput.value = "";
-phoneInput.value = "";
-frontInput.value = "";
-backInput.value = "";
+    // Show success modal with big green tick and order ID
+    const modal = document.getElementById('success-modal');
+    const modalOrderId = document.getElementById('modal-order-id');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    if (modal && modalOrderId && modalCloseBtn) {
+      modalOrderId.textContent = orderId;
+      modal.classList.remove('hidden');
+
+      // Close on button click
+      modalCloseBtn.onclick = () => {
+        modal.classList.add('hidden');
+      };
+
+      // Optional: close on backdrop click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('modal-backdrop')) {
+          modal.classList.add('hidden');
+        }
+      }, { once: true });
+    }
+
+    // Clear form
+    nameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
+    frontInput.value = "";
+    backInput.value = "";
+
 } catch (err) {
 console.error(err);
 setStatus("Unexpected error. Please try again later.");
@@ -205,3 +229,4 @@ console.error(err);
 setAdminStatus("Unexpected error loading orders.");
 }
 }
+
